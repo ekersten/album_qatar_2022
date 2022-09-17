@@ -15,15 +15,15 @@ class Group(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=3)
+    flag = models.CharField(max_length=7, null=True, blank=False)
     sticker_max = models.PositiveSmallIntegerField()
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='teams')
     sort_order = models.PositiveSmallIntegerField(default=0)
     starting_number = models.PositiveSmallIntegerField(default=1)
 
-
     @property
     def sticker_range(self):
-        return range(self.starting_number , self.starting_number + self.sticker_max)
+        return range(self.starting_number, self.starting_number + self.sticker_max)
 
     def __str__(self):
         return self.name

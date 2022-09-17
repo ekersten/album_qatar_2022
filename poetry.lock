@@ -111,10 +111,21 @@ category = "main"
 optional = false
 python-versions = ">=2"
 
+[[package]]
+name = "whitenoise"
+version = "6.2.0"
+description = "Radically simplified static file serving for WSGI applications"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+brotli = ["brotli"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b6733613df045a11cc4a9cd633dff3f1c58229e892c1a240b7f402851acbd169"
+content-hash = "093977b68cc212c0f6acabd58183cbf9a89880ec257f79f3495812cfdf5f5d7d"
 
 [metadata.files]
 asgiref = []
@@ -134,3 +145,4 @@ sqlparse = [
     {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
 ]
 tzdata = []
+whitenoise = []

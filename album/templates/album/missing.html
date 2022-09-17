@@ -1,0 +1,37 @@
+{% extends 'album/base.html' %}
+
+{% block 'content' %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Faltantes</h1>
+        </div>
+        
+        {% for team in teams %}
+            <div class="col-12">
+                <h5>{{ team.name }}{% comment %} ({{ team.missing|length }}){% endcomment %}</h5> 
+                <p>{% for n in team.missing %}<span class="sticker">{{ n }}</span>{% endfor %}</p>
+            </div>
+        {% endfor %}            
+    </div>
+    <style>
+        .sticker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: .2rem;
+            border: 1px solid black;
+            margin: 0 .2rem;
+            size: .8rem;
+        }
+        
+        .sticker:first-child {
+            margin-left: 0
+        }
+
+        .sticker:last-child {
+            margin-right: 0
+        }
+    </style>
+{% endblock %}

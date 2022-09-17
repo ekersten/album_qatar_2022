@@ -1,8 +1,9 @@
 from django.urls import path, include
 
-from .views import GroupsView
+from .views import MarkView, MissingStickersView
 
 urlpatterns = [
     path('api/', include('album.api.urls')),
-    path('', GroupsView.as_view(), name='groups'),
+    path('', MissingStickersView.as_view()),
+    path('mark/', MarkView.as_view()),
 ]

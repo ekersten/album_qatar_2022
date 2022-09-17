@@ -1,0 +1,136 @@
+[[package]]
+name = "asgiref"
+version = "3.5.2"
+description = "ASGI specs, helper code, and adapters"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+tests = ["pytest", "pytest-asyncio", "mypy (>=0.800)"]
+
+[[package]]
+name = "backports.zoneinfo"
+version = "0.2.1"
+description = "Backport of the standard library zoneinfo module"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+tzdata = ["tzdata"]
+
+[[package]]
+name = "django"
+version = "4.1.1"
+description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+asgiref = ">=3.5.2,<4"
+"backports.zoneinfo" = {version = "*", markers = "python_version < \"3.9\""}
+sqlparse = ">=0.2.2"
+tzdata = {version = "*", markers = "sys_platform == \"win32\""}
+
+[package.extras]
+argon2 = ["argon2-cffi (>=19.1.0)"]
+bcrypt = ["bcrypt"]
+
+[[package]]
+name = "djangorestframework"
+version = "3.13.1"
+description = "Web APIs for Django, made easy."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+django = ">=2.2"
+pytz = "*"
+
+[[package]]
+name = "flake8"
+version = "5.0.4"
+description = "the modular source code checker: pep8 pyflakes and co"
+category = "dev"
+optional = false
+python-versions = ">=3.6.1"
+
+[package.dependencies]
+mccabe = ">=0.7.0,<0.8.0"
+pycodestyle = ">=2.9.0,<2.10.0"
+pyflakes = ">=2.5.0,<2.6.0"
+
+[[package]]
+name = "mccabe"
+version = "0.7.0"
+description = "McCabe checker, plugin for flake8"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "pycodestyle"
+version = "2.9.1"
+description = "Python style guide checker"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "pyflakes"
+version = "2.5.0"
+description = "passive checker of Python programs"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "pytz"
+version = "2022.2.1"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "sqlparse"
+version = "0.4.2"
+description = "A non-validating SQL parser."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "tzdata"
+version = "2022.2"
+description = "Provider of IANA time zone data"
+category = "main"
+optional = false
+python-versions = ">=2"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.8"
+content-hash = "b6733613df045a11cc4a9cd633dff3f1c58229e892c1a240b7f402851acbd169"
+
+[metadata.files]
+asgiref = []
+"backports.zoneinfo" = []
+django = []
+djangorestframework = [
+    {file = "djangorestframework-3.13.1-py3-none-any.whl", hash = "sha256:24c4bf58ed7e85d1fe4ba250ab2da926d263cd57d64b03e8dcef0ac683f8b1aa"},
+    {file = "djangorestframework-3.13.1.tar.gz", hash = "sha256:0c33407ce23acc68eca2a6e46424b008c9c02eceb8cf18581921d0092bc1f2ee"},
+]
+flake8 = []
+mccabe = []
+pycodestyle = []
+pyflakes = []
+pytz = []
+sqlparse = [
+    {file = "sqlparse-0.4.2-py3-none-any.whl", hash = "sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d"},
+    {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
+]
+tzdata = []

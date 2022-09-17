@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf_token" content="{{ csrf_token }}">
+    <title>Grupos</title>
+</head>
+<body>
+    {% for group in groups %}
+        <div class="group">
+            <h3>Grupo {{ group.name }}</h3>
+            {% for team in group.teams.all %}
+                <table class="team">
+                    <thead>
+                        <tr>
+                            <th colspan="{{ team.sticker_max }}">{{ team.code }} - {{ team.name }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for n in team.sticker_range %}
+                                <td>{{ n }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% for n in team.sticker_range %}
+                                <td>
+                                    <input type="checkbox" data-number="{{ n }}" data-team="{{ team.pk }}" data-tag="{{ team.pk }}_{{ n }}">
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            {% endfor %}            
+        </div>
+    {% endfor %}
+
+    <style>
+        .team {
+            margin: 1rem 0;
+        }
+
+        .team, .team th, .team td {
+            border: 1px solid black;
+        }
+
+        .team thead th {
+            text-align: left;
+            background: black;
+            color: white;
+        }
+
+        .team td {
+            width: 2rem;
+            height: 2rem;
+            text-align: center;
+            vertical-align: center;
+        }
+    </style>
+    {{ stickers|json_script:"owned_stickers" }}
+    <script>
+        const owned = JSON.parse(document.getElementById('owned_stickers').textContent)
+        owned.forEach(s => {
+            document.querySelector(`input[type="checkbox"][data-tag="${s}"]`).checked = true;
+        });
+        const checks = document.querySelectorAll('input[type="checkbox"]');
+        checks.forEach(check => {
+            check.addEventListener('change', async e => {
+                const t = e.target;
+                
+                if (t.checked) {
+                    const response = await fetch('/api/add_sticker/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('meta[name="csrf_token"]').content
+                        },
+                        body: JSON.stringify({team: parseInt(t.dataset.team), number: parseInt(t.dataset.number)})
+                    });
+    
+                    const data = await response.json();
+                } else {
+                    const response = await fetch('/api/delete_sticker/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('meta[name="csrf_token"]').content
+                        },
+                        body: JSON.stringify({team: parseInt(t.dataset.team), number: parseInt(t.dataset.number)})
+                    });
+    
+                    const data = await response.json();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

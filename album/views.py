@@ -24,16 +24,17 @@ class MissingStickersView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['teams'] = []
-        for team in Team.objects.all():
-            range = list(team.sticker_range)
-            stickers = Sticker.objects.filter(team=team, owner=self.request.user)
-            for sticker in stickers:
-                range.remove(sticker.number)
+        for group in Group.objects.all().order_by('sort_order'):
+            for team in group.teams.all().order_by('sort_order'):
+                range = list(team.sticker_range)
+                stickers = Sticker.objects.filter(team=team, owner=self.request.user)
+                for sticker in stickers:
+                    range.remove(sticker.number)
 
-            context['teams'].append({
-                'name': team.name,
-                'missing': range
-            })
+                context['teams'].append({
+                    'name': team.name,
+                    'missing': range
+                })
 
         return context
 
@@ -80,7 +81,7 @@ class StatsView(LoginRequiredMixin, TemplateView):
                 'teams': []
             }
 
-            for team in group.teams.all():
+            for team in group.teams.all().order_by('sort_order'):
                 team_sticker_count = Sticker.objects.filter(team=team, owner=self.request.user).count()
                 team_obj = {
                     'total': team.sticker_max,

@@ -1,4 +1,8 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
 
 from .models import Group, Sticker, Team
 
@@ -13,7 +17,8 @@ def get_progress_class(progress):
     return 'bg-success'
 
 
-class MissingStickersView(TemplateView):
+class MissingStickersView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
     template_name = 'album/missing.html'
 
     def get_context_data(self, **kwargs):
@@ -21,7 +26,7 @@ class MissingStickersView(TemplateView):
         context['teams'] = []
         for team in Team.objects.all():
             range = list(team.sticker_range)
-            stickers = Sticker.objects.filter(team=team)
+            stickers = Sticker.objects.filter(team=team, owner=self.request.user)
             for sticker in stickers:
                 range.remove(sticker.number)
 
@@ -33,20 +38,22 @@ class MissingStickersView(TemplateView):
         return context
 
 
-class MarkView(TemplateView):
+class MarkView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
     template_name = 'album/mark.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['groups'] = Group.objects.all()
         context['stickers'] = []
-        for sticker in Sticker.objects.all():
+        for sticker in Sticker.objects.filter(owner=self.request.user):
             context['stickers'].append(f'{sticker.team.pk}_{sticker.number}')
 
         return context
 
 
-class StatsView(TemplateView):
+class StatsView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
     template_name = 'album/stats.html'
 
     def get_context_data(self, **kwargs):
@@ -74,7 +81,7 @@ class StatsView(TemplateView):
             }
 
             for team in group.teams.all():
-                team_sticker_count = Sticker.objects.filter(team=team).count()
+                team_sticker_count = Sticker.objects.filter(team=team, owner=self.request.user).count()
                 team_obj = {
                     'total': team.sticker_max,
                     'name': team.name,
@@ -103,3 +110,20 @@ class StatsView(TemplateView):
             context['stats']['groups'].append(group_obj)
 
         return context
+
+
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'album/login.html')
+    
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        
+        return render(request, 'album/login.html')

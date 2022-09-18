@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 
 class Group(models.Model):
@@ -35,6 +36,7 @@ class Team(models.Model):
 class Sticker(models.Model):
     number = models.PositiveSmallIntegerField()
     team = models.ForeignKey(Team, on_delete=models.PROTECT, related_name='stickers')
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='stickers')
 
     @property
     def tag(self):

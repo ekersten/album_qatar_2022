@@ -1,1 +1,1 @@
-python manage.py dumpdata album.Group album.Team album.Sticker > album/fixtures/initial_data.json
+python manage.py dumpdata --all --natural-foreign --natural-primary > album/fixtures/initial_data.json

@@ -79,12 +79,19 @@ WSGI_APPLICATION = 'figus.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DATABASE_URL = os.getenv('DATABASE_URL')
+
+if DATABASE_URL is not None:
+    DATABASES["default"] = DATABASE_URL
+
 
 
 # Password validation

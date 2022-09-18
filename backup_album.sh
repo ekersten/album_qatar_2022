@@ -1,0 +1,1 @@
+python manage.py dumpdata album.Group album.Team album.Sticker > album/fixtures/initial_data.json

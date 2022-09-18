@@ -9,6 +9,7 @@ python = "3.8.13"
 Django = "^4.1.1"
 djangorestframework = "^3.13.1"
 whitenoise = "^6.2.0"
+dj-database-url = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"

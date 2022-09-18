@@ -1,0 +1,60 @@
+{% extends 'album/base.html' %}
+
+{% block 'doc-title' %}Estadísticas - Qatar 2022{% endblock %}
+
+{% block 'content' %}
+<div class="row">
+    <div class="col">
+        <h1>Estadísticas</h1>
+    </div>
+</div>    
+
+<div class="row">
+    <div class="col-12">
+        <h2>Global</h2>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated {{ stats.global.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ stats.global.progress }}%;" aria-valuenow="{{ stats.global.progress }}" aria-valuemin="0" aria-valuemax="100">{{ stats.global.progress }}%</div>
+        </div>
+        <p>{{ stats.global.owned }} / {{ stats.global.total }} (Faltan: {{ stats.global.missing }})</p>
+        {% comment %} <ul>
+            <li><strong>Total:</strong> {{ stats.global.total }}</li>
+            <li><strong>Tengo:</strong> {{ stats.global.owned }}</li>
+            <li><strong>Faltan:</strong> {{ stats.global.missing }}</li>
+            <li><strong>Progreso:</strong> {{ stats.global.progress }}%</li>
+        </ul> {% endcomment %}
+    </div>
+</div>
+
+{% for group in stats.groups %}
+<div class="row">
+    <div class="col-12">
+        <h3>Grupo {{ group.name }}</h3>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated {{ group.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ group.progress }}%;" aria-valuenow="{{ group.progress }}" aria-valuemin="0" aria-valuemax="100">{{ group.progress }}%</div>
+        </div>
+        <p>{{ group.owned }} / {{ group.total }} (Faltan: {{ group.missing }})</p>
+        {% comment %} <ul>
+            <li><strong>Total:</strong> {{ group.total }}</li>
+            <li><strong>Tengo:</strong> {{ group.owned }}</li>
+            <li><strong>Faltan:</strong> {{ group.missing }}</li>
+            <li><strong>Progreso:</strong> {{ group.progress }}%</li>
+        </ul> {% endcomment %}
+    </div>
+    {% for team in group.teams %}
+    <div class="col-md-6">
+        <h4>{% if team.flag %}&nbsp;<img src="https://flagicons.lipis.dev/flags/4x3/{{team.flag}}.svg" width="20"> {% endif %}{{ team.name }}</h4>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated {{ team.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ team.progress }}%;" aria-valuenow="{{ team.progress }}" aria-valuemin="0" aria-valuemax="100">{{ team.progress }}%</div>
+        </div>
+        <p>{{ team.owned }} / {{ team.total }} (Faltan: {{ team.missing }})</p>
+        {% comment %} <ul>
+            <li><strong>Total:</strong> {{ team.total }}</li>
+            <li><strong>Tengo:</strong> {{ team.owned }}</li>
+            <li><strong>Faltan:</strong> {{ team.missing }}</li>
+            <li><strong>Progreso:</strong> {{ team.progress }}%</li>
+        </ul> {% endcomment %}
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

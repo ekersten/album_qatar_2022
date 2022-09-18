@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 
-from .models import Group, Sticker, Team
+from .models import Group, Sticker
 
 
 def get_progress_class(progress):
@@ -117,7 +117,7 @@ class StatsView(LoginRequiredMixin, TemplateView):
 class LoginView(View):
     def get(self, request):
         return render(request, 'album/login.html')
-    
+
     def post(self, request):
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -127,5 +127,5 @@ class LoginView(View):
         if user is not None:
             login(request, user)
             return redirect('/')
-        
+
         return render(request, 'album/login.html')

@@ -2,28 +2,40 @@
 
 {% block 'content' %}
     <div class="row">
-        <div class="col-12">
-            <h1>Faltantes</h1>
+        <div class="col-12 d-print-none">
+            <h2>Faltantes <button id="printBtn" class="btn btn-success btn-sm">Imprimir</button></h2>
         </div>
         
         {% for team in teams %}
-            <div class="col-12">
+            <div class="col-md-6">
                 <h5>{{ team.name }}{% comment %} ({{ team.missing|length }}){% endcomment %}</h5> 
-                <p>{% for n in team.missing %}<span class="sticker">{{ n }}</span>{% endfor %}</p>
+                <p class="missing">{% for n in team.missing %}<span class="sticker">{{ n }}</span>{% endfor %}</p>
             </div>
         {% endfor %}            
     </div>
     <style>
+        h5 {
+            margin: .2rem 0;
+        }
+
+        p {
+            margin: .2rem 0;
+        }
+
+        .missing {
+            line-height: 2rem;
+        }
+
         .sticker {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 1.5rem;
-            height: 1.5rem;
+            width: 1.2rem;
+            height: 1.2rem;
             border-radius: .2rem;
             border: 1px solid black;
             margin: 0 .2rem;
-            size: .8rem;
+            font-size: .8rem;
         }
         
         .sticker:first-child {
@@ -34,4 +46,12 @@
             margin-right: 0
         }
     </style>
+{% endblock %}
+
+{% block 'extra-js' %}
+    <script>
+        document.getElementById('printBtn').addEventListener('click', e => {
+            window.print();
+        });
+    </script>
 {% endblock %}

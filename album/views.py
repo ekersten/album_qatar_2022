@@ -65,6 +65,7 @@ class StatsView(TemplateView):
         for group in Group.objects.all().order_by('sort_order'):
             group_obj = {
                 'total': 0,
+                'id': group.pk,
                 'name': group.name,
                 'owned': 0,
                 'missing': 0,

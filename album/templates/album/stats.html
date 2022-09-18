@@ -3,58 +3,102 @@
 {% block 'doc-title' %}Estadísticas - Qatar 2022{% endblock %}
 
 {% block 'content' %}
-<div class="row">
+{% comment %} <div class="row">
     <div class="col">
         <h1>Estadísticas</h1>
     </div>
-</div>    
+</div>     {% endcomment %}
 
-<div class="row">
+<div class="row my-4">
     <div class="col-12">
         <h2>Global</h2>
         <div class="progress">
             <div class="progress-bar progress-bar-striped progress-bar-animated {{ stats.global.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ stats.global.progress }}%;" aria-valuenow="{{ stats.global.progress }}" aria-valuemin="0" aria-valuemax="100">{{ stats.global.progress }}%</div>
         </div>
-        <p>{{ stats.global.owned }} / {{ stats.global.total }} (Faltan: {{ stats.global.missing }})</p>
-        {% comment %} <ul>
-            <li><strong>Total:</strong> {{ stats.global.total }}</li>
-            <li><strong>Tengo:</strong> {{ stats.global.owned }}</li>
-            <li><strong>Faltan:</strong> {{ stats.global.missing }}</li>
-            <li><strong>Progreso:</strong> {{ stats.global.progress }}%</li>
-        </ul> {% endcomment %}
+        <p class="info">{{ stats.global.owned }} / {{ stats.global.total }} (Faltan: {{ stats.global.missing }})</p>
     </div>
 </div>
 
 {% for group in stats.groups %}
-<div class="row">
-    <div class="col-12">
-        <h3>Grupo {{ group.name }}</h3>
+<div class="row gy-2 mb-5">
+    <div class="col-12 group">
+        <h3 data-toggle="group_{{ group.id }}">Grupo {{ group.name }}</h3>
         <div class="progress">
             <div class="progress-bar progress-bar-striped progress-bar-animated {{ group.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ group.progress }}%;" aria-valuenow="{{ group.progress }}" aria-valuemin="0" aria-valuemax="100">{{ group.progress }}%</div>
         </div>
-        <p>{{ group.owned }} / {{ group.total }} (Faltan: {{ group.missing }})</p>
-        {% comment %} <ul>
-            <li><strong>Total:</strong> {{ group.total }}</li>
-            <li><strong>Tengo:</strong> {{ group.owned }}</li>
-            <li><strong>Faltan:</strong> {{ group.missing }}</li>
-            <li><strong>Progreso:</strong> {{ group.progress }}%</li>
-        </ul> {% endcomment %}
+        <p class="info">{{ group.owned }} / {{ group.total }} (Faltan: {{ group.missing }})</p>
     </div>
     {% for team in group.teams %}
-    <div class="col-md-6">
-        <h4>{% if team.flag %}&nbsp;<img src="https://flagicons.lipis.dev/flags/4x3/{{team.flag}}.svg" width="20"> {% endif %}{{ team.name }}</h4>
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped progress-bar-animated {{ team.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ team.progress }}%;" aria-valuenow="{{ team.progress }}" aria-valuemin="0" aria-valuemax="100">{{ team.progress }}%</div>
+    <div class="col-md-6 collapsable open" data-group="group_{{ group.id }}">
+        <div class="content">
+            <h4>{% if team.flag %}&nbsp;<img src="https://flagicons.lipis.dev/flags/4x3/{{team.flag}}.svg" width="20"> {% endif %}{{ team.name }}</h4>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated {{ team.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ team.progress }}%;" aria-valuenow="{{ team.progress }}" aria-valuemin="0" aria-valuemax="100">{{ team.progress }}%</div>
+            </div>
+            <p class="info">{{ team.owned }} / {{ team.total }} (Faltan: {{ team.missing }})</p>
         </div>
-        <p>{{ team.owned }} / {{ team.total }} (Faltan: {{ team.missing }})</p>
-        {% comment %} <ul>
-            <li><strong>Total:</strong> {{ team.total }}</li>
-            <li><strong>Tengo:</strong> {{ team.owned }}</li>
-            <li><strong>Faltan:</strong> {{ team.missing }}</li>
-            <li><strong>Progreso:</strong> {{ team.progress }}%</li>
-        </ul> {% endcomment %}
     </div>
     {% endfor %}
 </div>
 {% endfor %}
+<style>
+    [data-toggle] {
+        cursor: pointer;
+    }
+
+    .group h3, h2 {
+        text-align: center;
+    }
+
+    .collapsable {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .3s ease-in-out;
+    }
+
+    .collapsable.open {
+        max-height: 100vh;
+    }
+
+    .collapsable .content {
+        background: var(--bs-gray-100);
+        border: 1px solid var(--bs-gray-200);
+        padding: .5rem .8rem;
+        border-radius: .4rem;
+        margin: .2rem 0;
+    }
+
+    .collapsable .content h4 {
+        display: flex;
+        align-items: center;
+        margin: 1rem 0 ;
+    }
+
+    .collapsable .content h4 img {
+        display: inline-block;
+        margin-right: .5rem;
+        box-shadow: .1rem .1rem .2rem rgba(0,0,0,.6);
+    }
+
+    p.info {
+        font-size: .75rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: .2rem;
+        color: var(--bs-gray-700);
+    }
+</style>
+{% endblock %}
+
+{% block 'extra-js' %}
+<script>
+    const groupTitles = document.querySelectorAll('[data-toggle]');
+    groupTitles.forEach(el => {
+        el.addEventListener('click', e => {
+            document.querySelectorAll(`[data-group="${e.target.dataset.toggle}"]`).forEach(el => {
+                el.classList.toggle('open');
+            });
+        });
+    });
+</script>
 {% endblock %}

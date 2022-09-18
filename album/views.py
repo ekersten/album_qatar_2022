@@ -33,6 +33,7 @@ class MissingStickersView(LoginRequiredMixin, TemplateView):
 
                 context['teams'].append({
                     'name': team.name,
+                    'code': team.code,
                     'missing': range
                 })
 

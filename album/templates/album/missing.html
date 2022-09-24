@@ -9,12 +9,17 @@
             <button id="printBtn" class="btn btn-success btn-sm"><img src="{% static 'album/images/printer-fill.svg' %}" width="15">Imprimir</button>
         </div>
         
-        {% for team in teams %}
-            <div class="col-md-6">
-                <h5>{{ team.code }} - {{ team.name }}{% comment %} ({{ team.missing|length }}){% endcomment %}</h5> 
-                <p class="missing">{% for n in team.missing %}<span class="sticker">{{ n }}</span>{% endfor %}</p>
+        {% for group in groups %}
+            <div class="row group my-3 pb-3">
+                <h3>{% if group.name|length|get_digit:"-1" <= 1 %}Grupo {% endif %}{{ group.name }}</h3>
+                {% for team in group.teams %}
+                    <div class="col-md-6">
+                        <h5>{{ team.code }} - {{ team.name }}</h5> 
+                        <p class="missing">{% for n in team.missing %}<span class="sticker">{{ n }}</span>{% endfor %}</p>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}            
+        {% endfor %}
     </div>
     <style>
         h5 {
@@ -27,6 +32,22 @@
 
         .missing {
             line-height: 2rem;
+        }
+
+        .group {
+            position: relative;
+            border-bottom: 1px solid black;
+        }
+
+        .group h3 {
+            transform: rotate(-90deg) translateX(25%);
+            width: auto;
+            max-width: none;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin: 0;
+            padding: 0;
         }
 
         .sticker {

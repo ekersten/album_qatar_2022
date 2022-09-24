@@ -15,14 +15,14 @@
         <div class="progress">
             <div class="progress-bar progress-bar-striped progress-bar-animated {{ stats.global.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ stats.global.progress }}%;" aria-valuenow="{{ stats.global.progress }}" aria-valuemin="0" aria-valuemax="100">{{ stats.global.progress }}%</div>
         </div>
-        <p class="info">{{ stats.global.owned }} / {{ stats.global.total }} (Faltan: {{ stats.global.missing }})</p>
+        <p class="info">{{ stats.global.owned }} / {{ stats.global.total }} (Faltan: {{ stats.global.missing }} - {{ stats.global.packs }} sobres)</p>
     </div>
 </div>
 
 {% for group in stats.groups %}
 <div class="row gy-2 mb-5">
     <div class="col-12 group">
-        <h3 data-toggle="group_{{ group.id }}">Grupo {{ group.name }}</h3>
+        <h3 data-toggle="group_{{ group.id }}">{% if group.name|length|get_digit:"-1" <= 1 %}Grupo {% endif %}{{ group.name }}</h3>
         <div class="progress">
             <div class="progress-bar progress-bar-striped progress-bar-animated {{ group.progress_class }}" role="progressbar" aria-label="Example with label" style="width: {{ group.progress }}%;" aria-valuenow="{{ group.progress }}" aria-valuemin="0" aria-valuemax="100">{{ group.progress }}%</div>
         </div>

@@ -6,7 +6,7 @@
 {% for group in groups %}
     <div class="row">
         <div class="col-12">
-            <h3>Grupo {{ group.name }}</h3>
+            <h3>{% if group.name|length|get_digit:"-1" <= 1 %}Grupo {% endif %}{{ group.name }}</h3>
         </div>
         
         {% for team in group.teams.all %}

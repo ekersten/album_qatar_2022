@@ -23,19 +23,24 @@ class MissingStickersView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['teams'] = []
+        context['groups'] = []
         for group in Group.objects.all().order_by('sort_order'):
+            group_obj = {
+                'name': group.name,
+                'teams': []
+            }
             for team in group.teams.all().order_by('sort_order'):
                 range = list(team.sticker_range)
                 stickers = Sticker.objects.filter(team=team, owner=self.request.user)
                 for sticker in stickers:
                     range.remove(sticker.number)
 
-                context['teams'].append({
+                group_obj['teams'].append({
                     'name': team.name,
                     'code': team.code,
                     'missing': range
                 })
+            context['groups'].append(group_obj)
 
         return context
 
@@ -106,6 +111,7 @@ class StatsView(LoginRequiredMixin, TemplateView):
             context['stats']['global']['total'] += group_obj['total']
             context['stats']['global']['owned'] += group_obj['owned']
             context['stats']['global']['missing'] += group_obj['missing']
+            context['stats']['global']['packs'] = round(context['stats']['global']['missing'] / 5)
             context['stats']['global']['progress'] = round((context['stats']['global']['owned'] * 100) / context['stats']['global']['total'])
             context['stats']['global']['progress_class'] = get_progress_class(round((context['stats']['global']['owned'] * 100) / context['stats']['global']['total']))
 

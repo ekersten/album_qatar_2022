@@ -10,7 +10,7 @@
         </div>
         
         {% for group in groups %}
-            <div class="row group my-3 pb-3">
+            <div class="row group py-3{% if group.name|length|get_digit:"-1" > 1 %} extra{% endif %}">
                 <h3>{% if group.name|length|get_digit:"-1" <= 1 %}Grupo {% endif %}{{ group.name }}</h3>
                 {% for team in group.teams %}
                     <div class="col-md-6">
@@ -39,6 +39,11 @@
             border-bottom: 1px solid black;
         }
 
+        .group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
         .group h3 {
             transform: rotate(-90deg) translateX(25%);
             width: auto;
@@ -48,6 +53,11 @@
             top: 50%;
             margin: 0;
             padding: 0;
+        }
+
+        .group.extra h3 {
+            transform: none;
+            right: 1rem;
         }
 
         .sticker {

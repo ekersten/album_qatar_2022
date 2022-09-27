@@ -47,4 +47,4 @@ class Sticker(models.Model):
 
     class Meta:
         ordering = ['number']
-        unique_together = ['number', 'team']
+        unique_together = ['number', 'team', 'owner']

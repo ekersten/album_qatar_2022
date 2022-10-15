@@ -38,8 +38,10 @@ class MissingStickersView(LoginRequiredMixin, TemplateView):
                 group_obj['teams'].append({
                     'name': team.name,
                     'code': team.code,
-                    'missing': range
+                    'missing': range,
+                    'complete': len(range) == 0
                 })
+            group_obj['complete'] = len([team for team in group_obj['teams'] if team.get('complete') is True]) == len(group_obj['teams'])
             context['groups'].append(group_obj)
 
         return context

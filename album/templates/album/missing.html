@@ -7,13 +7,19 @@
     <div class="row">
         <div class="col-12 d-print-none py-3">
             <button id="printBtn" class="btn btn-success btn-sm"><img src="{% static 'album/images/printer-fill.svg' %}" width="15">Imprimir</button>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="hideComplete">
+                <label class="form-check-label" for="hideComplete">
+                  Ocultar completos
+                </label>
+              </div>
         </div>
         
         {% for group in groups %}
-            <div class="row group py-3{% if group.name|length|get_digit:"-1" > 1 %} extra{% endif %}">
+            <div class="row group py-3{% if group.name|length|get_digit:"-1" > 1 %} extra{% endif %}{% if group.complete %} complete{% endif %}">
                 <h3 class="">{% if group.name|length|get_digit:"-1" <= 1 %}Grupo {% endif %}{{ group.name }}</h3>
                 {% for team in group.teams %}
-                    <div class="col-md-6">
+                    <div class="col-md-6{% if team.complete %} complete{% endif %}">
                         <h5>{{ team.code }} - {{ team.name }}</h5> 
                         <p class="missing">{% for n in team.missing %}<span class="sticker">{{ n }}</span>{% endfor %}</p>
                     </div>
@@ -101,6 +107,15 @@
     <script>
         document.getElementById('printBtn').addEventListener('click', e => {
             window.print();
+        });
+
+        document.getElementById('hideComplete').addEventListener('change', e => {
+            const completed = document.querySelectorAll('.complete');
+            if (e.target.checked) {
+                completed.forEach(el => el.classList.add(...['d-print-none', 'd-none']))
+            } else {
+                completed.forEach(el => el.classList.remove(...['d-print-none', 'd-none']))
+            }
         });
     </script>
 {% endblock %}

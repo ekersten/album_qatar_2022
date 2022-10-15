@@ -17,7 +17,7 @@
         
         {% for group in groups %}
             <div class="row group py-3{% if group.name|length|get_digit:"-1" > 1 %} extra{% endif %}{% if group.complete %} complete{% endif %}">
-                <h3 class="">{% if group.name|length|get_digit:"-1" <= 1 %}Grupo {% endif %}{{ group.name }}</h3>
+                <h3 class="d-print-none">{% if group.name|length|get_digit:"-1" <= 1 %}Grupo {% endif %}{{ group.name }}</h3>
                 {% for team in group.teams %}
                     <div class="col-md-6{% if team.complete %} complete{% endif %}">
                         <h5>{{ team.code }} - {{ team.name }}</h5> 
@@ -71,34 +71,6 @@
 
         #printBtn img {
             margin-right: .5rem;
-        }
-
-        @media print {
-            .group {
-                position: relative;
-                border-bottom: 1px solid black;
-            }
-    
-            .group:last-child {
-                border-bottom: none;
-                padding-bottom: 0;
-            }
-    
-            .group h3 {
-                transform: rotate(-90deg) translateX(25%);
-                width: auto;
-                max-width: none;
-                position: absolute;
-                right: 0;
-                top: 50%;
-                margin: 0;
-                padding: 0;
-            }
-    
-            .group.extra h3 {
-                transform: none;
-                right: 1rem;
-            }
         }
     </style>
 {% endblock %}
